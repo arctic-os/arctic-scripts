@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+## Everyone is permitted to copy and distribute copies of this file under GNU-GPL3
+
+## Rofi #############################################
+DIR="$HOME/.config/rofi/scripts"
+
+confirmDialog () {
+    $DIR/promptmenu
+}
+
+## Options #############################################
+if  [[ $1 = "--logout" ]]; then
+	ans=$(confirmDialog)
+	if [[ $ans == "0" ]]; then
+        openbox --exit
+	elif [[ $ans == "1" ]]; then
+        exit
+    fi
+
+elif  [[ $1 = "--suspend" ]]; then
+	ans=$(confirmDialog)
+	if [[ $ans == "0" ]]; then
+		mpc -q pause
+		amixer set Master mute
+		betterlockscreen --suspend
+	elif [[ $ans == "1" ]]; then
+		exit
+    fi
+
+elif  [[ $1 = "--reboot" ]]; then
+	ans=$(confirmDialog)
+	if [[ $ans == "0" ]]; then
+        systemctl reboot
+	elif [[ $ans == "1" ]]; then
+        exit
+    fi
+
+elif  [[ $1 = "--shutdown" ]]; then
+	ans=$(confirmDialog)
+	if [[ $ans == "0" ]]; then
+        systemctl poweroff
+	elif [[ $ans == "1" ]]; then
+        exit
+    fi
+
+elif  [[ $1 = "--lock" ]]; then
+	ans=$(confirmDialog)
+	if [[ $ans == "0" ]]; then
+        betterlockscreen --lock
+	elif [[ $ans == "1" ]]; then
+        exit
+    fi
+
+## Help Menu #############################################
+else
+echo "
+Powermenu For Openbox Menu
+
+Available options:
+--logout	--suspend	--reboot	--shutdown   --lock
+"
+fi
